@@ -15,7 +15,7 @@ import (
 var app config.AppConfig
 var session *scs.SessionManager
 
-const portNumber = ":8082"
+const portNumber = ":8083"
 
 // main is the main function
 func main() {
