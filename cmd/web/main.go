@@ -1,9 +1,11 @@
 package main
 
 import (
-	"BookingsApp/pkg/config"
-	"BookingsApp/pkg/handlers"
-	"BookingsApp/pkg/render"
+	"BookingsApp/internal/config"
+	"BookingsApp/internal/handlers"
+	"BookingsApp/internal/models"
+	"BookingsApp/internal/render"
+	"encoding/gob"
 	"fmt"
 	"log"
 	"net/http"
@@ -19,6 +21,9 @@ const portNumber = ":8083"
 
 // main is the main function
 func main() {
+	//what am I going to
+	gob.Register(models.Reservation{})
+	//change this to true when in production
 	app.InProduction = false
 	session = scs.New()
 	session.Lifetime = 24 * time.Hour

@@ -2,8 +2,8 @@ package main
 
 import (
 	// "BookingsApp/cmd/web/middleware"
-	"BookingsApp/pkg/config"
-	"BookingsApp/pkg/handlers"
+	"BookingsApp/internal/config"
+	"BookingsApp/internal/handlers"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
@@ -20,9 +20,13 @@ func routes(app *config.AppConfig) http.Handler {
 	mux.Get("/generals-quarters", handlers.Repo.Generals)
 	mux.Get("/search-availability", handlers.Repo.Availability)
 	mux.Post("/search-availability", handlers.Repo.PostAvailability)
+	mux.Post("/search-availability-json", handlers.Repo.AvailabilityJSON)
 
 	mux.Get("/majors-suite", handlers.Repo.Majors)
 	mux.Get("/make-reservation", handlers.Repo.Reservation)
+	mux.Post("/make-reservation", handlers.Repo.PostReservation)
+	mux.Get("/reservation-summary", handlers.Repo.ReservationSummary)
+
 	mux.Get("/contact", handlers.Repo.Contact)
 
 	fileServer := http.FileServer(http.Dir("./static/"))
