@@ -22,7 +22,7 @@ var app config.AppConfig
 var session *scs.SessionManager
 var functions = template.FuncMap{}
 
-const pathToTemplates = "./../templates"
+const pathToTemplates = "./../../templates"
 
 func getRoutes() http.Handler {
 	gob.Register(models.Reservation{})
@@ -49,7 +49,7 @@ func getRoutes() http.Handler {
 
 	mux := chi.NewRouter()
 	mux.Use(middleware.Recoverer)
-	mux.Use(NoSurf)
+	// mux.Use(NoSurf)
 	mux.Use(SessionLoad)
 	mux.Get("/", Repo.Home)
 	mux.Get("/about", Repo.About)
@@ -72,12 +72,12 @@ func getRoutes() http.Handler {
 	return mux
 }
 
-func WriteToConsole(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		fmt.Println("hit the page")
-		next.ServeHTTP(w, r)
-	})
-}
+// func WriteToConsole(next http.Handler) http.Handler {
+// 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+// 		fmt.Println("hit the page")
+// 		next.ServeHTTP(w, r)
+// 	})
+// }
 
 //NoSurf adds protection to all POST requests
 func NoSurf(next http.Handler) http.Handler {
@@ -119,7 +119,7 @@ func CreateTestTemplateCache() (map[string]*template.Template, error) {
 		}
 
 		if len(matches) > 0 {
-			ts, err = ts.ParseGlob(fmt.Sprintf("%s/.*layout.tmpl", pathToTemplates))
+			ts, err = ts.ParseGlob(fmt.Sprintf("%s/*.layout.tmpl", pathToTemplates))
 			if err != nil {
 				return myCache, err
 			}
