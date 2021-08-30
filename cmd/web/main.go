@@ -1,6 +1,7 @@
 package main
 
 import (
+	"BookingsApp/helpers"
 	"BookingsApp/internal/config"
 	"BookingsApp/internal/handlers"
 	"BookingsApp/internal/models"
@@ -9,6 +10,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/alexedwards/scs/v2"
@@ -16,6 +18,8 @@ import (
 
 var app config.AppConfig
 var session *scs.SessionManager
+var infoLog *log.Logger
+var errorLog *log.Logger
 
 const portNumber = ":8083"
 
@@ -37,6 +41,11 @@ func main() {
 func run() error {
 	//what am I going to
 	gob.Register(models.Reservation{})
+
+	infoLog = log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
+	app.InfoLog = infoLog
+	errorLog = log.New(os.Stdout, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
+	app.ErrorLog = errorLog
 	//change this to true when in production
 	app.InProduction = false
 	session = scs.New()
@@ -57,7 +66,7 @@ func run() error {
 	//creating repo in main and passing the wide app to handlers
 	repo := handlers.NewRepo(&app)
 	handlers.NewHandlers(repo)
-
 	render.NewTemplates(&app)
+	helpers.NewHelpers(&app)
 	return nil
 }
