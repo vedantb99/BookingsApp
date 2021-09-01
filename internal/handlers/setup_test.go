@@ -50,7 +50,7 @@ func getRoutes() http.Handler {
 	//creating repo in main and passing the wide app to handlers
 	repo := NewRepo(&app)
 	NewHandlers(repo)
-	render.NewTemplates(&app)
+	render.NewRenderer(&app)
 
 	mux := chi.NewRouter()
 	mux.Use(middleware.Recoverer)
